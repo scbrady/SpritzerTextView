@@ -26,7 +26,7 @@ public class Spritzer {
     protected static final int MSG_PRINT_WORD = 1;
 
     protected static final int MAX_WORD_LENGTH = 13;
-    protected static final int CHARS_LEFT_OF_PIVOT = 3;
+    public static int CHARS_LEFT_OF_PIVOT = 3;
 
     protected String[] mWordArray;                  // A parsed list of words parsed from {@link #setText(String input)}
     protected ArrayDeque<String> mWordQueue;        // The queue of words from mWordArray yet to be displayed

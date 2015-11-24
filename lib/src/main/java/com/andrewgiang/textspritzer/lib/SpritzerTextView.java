@@ -32,7 +32,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     public static final String TAG = SpritzerTextView.class.getName();
-    public static final int PAINT_WIDTH_DP = 4;          // thickness of spritz guide bars in dp
+    public static final int PAINT_WIDTH_DP = 2;          // thickness of spritz guide bars in dp
     // For optimal drawing should be an even number
 
     private Spritzer mSpritzer;
@@ -115,21 +115,22 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
 
     }
 
+    public void setReticleLineColor(int reticleLineColor) {
+        mPaintGuides.setColor(reticleLineColor);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         // Measurements for top & bottom guide line
-        int beginTopX = 0;
-        int endTopX = getMeasuredWidth();
-        int topY = 0;
-
-        int beginBottomX = 0;
-        int endBottomX = getMeasuredWidth();
-        int bottomY = getMeasuredHeight();
+        int beginX = 30;
+        int endX = getMeasuredWidth() - 30;
+        int topY = 25;
+        int bottomY = getMeasuredHeight() - 25;
         // Paint the top guide and bottom guide bars
-        canvas.drawLine(beginTopX, topY, endTopX, topY, mPaintGuides);
-        canvas.drawLine(beginBottomX, bottomY, endBottomX, bottomY, mPaintGuides);
+        canvas.drawLine(beginX, topY, endX, topY, mPaintGuides);
+        canvas.drawLine(beginX, bottomY, endX, bottomY, mPaintGuides);
 
         // Measurements for pivot indicator
         float centerX = calculatePivotXOffset() + getPaddingLeft();
@@ -164,9 +165,13 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
             // Spritzer requires monospace font so character is irrelevant
             mTestString = "a";
         }
+        float textSize = (getPaint().measureText(mTestString, 0, 1));
+        int charactersOnScreen = getMeasuredWidth() / (int)textSize;
+        Spritzer.CHARS_LEFT_OF_PIVOT = (charactersOnScreen/2) - 3;
+
         // Measure the rendered distance of CHARS_LEFT_OF_PIVOT chars
         // plus half the pivot character
-        return (getPaint().measureText(mTestString, 0, 1) * (Spritzer.CHARS_LEFT_OF_PIVOT + .50f));
+        return (textSize * (Spritzer.CHARS_LEFT_OF_PIVOT + .50f));
     }
 
     /**
