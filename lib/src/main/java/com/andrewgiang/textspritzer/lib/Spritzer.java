@@ -75,6 +75,7 @@ public class Spritzer {
         createWordArrayFromString(input);
         setMaxProgress();
         refillWordQueue();
+        printWord(mWordQueue.peek());
     }
 
     private void setMaxProgress() {

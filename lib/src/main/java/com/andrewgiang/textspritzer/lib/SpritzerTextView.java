@@ -41,6 +41,8 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     private String mTestString;
     private boolean mDefaultClickListener = false;
     private int mAdditonalPadding;
+    private int mHeightOffset;
+    private int mWidthOffset;
 
     /**
      * Register a callback for when the view has been clicked
@@ -108,6 +110,9 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintGuides.setColor(getCurrentTextColor());
         mPaintGuides.setStrokeWidth(mPaintWidthPx);
+
+        mHeightOffset = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+        mWidthOffset  = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
         mPaintGuides.setAlpha(128);
         if (mDefaultClickListener) {
             this.setOnClickListener(this);
@@ -124,10 +129,10 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
         super.onDraw(canvas);
 
         // Measurements for top & bottom guide line
-        int beginX = 30;
-        int endX = getMeasuredWidth() - 30;
-        int topY = 25;
-        int bottomY = getMeasuredHeight() - 25;
+        int beginX = mWidthOffset;
+        int endX = getMeasuredWidth() - mWidthOffset;
+        int topY = mHeightOffset;
+        int bottomY = getMeasuredHeight() - mHeightOffset;
         // Paint the top guide and bottom guide bars
         canvas.drawLine(beginX, topY, endX, topY, mPaintGuides);
         canvas.drawLine(beginX, bottomY, endX, bottomY, mPaintGuides);
