@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -103,8 +105,7 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     }
 
     private void init() {
-        int pivotPadding = getPivotPadding();
-        setPadding(getPaddingLeft(), pivotPadding, getPaddingRight(), pivotPadding);
+        setGravity(Gravity.CENTER_VERTICAL);
         mPaintWidthPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PAINT_WIDTH_DP, getResources().getDisplayMetrics());
         mSpritzer = new Spritzer(this);
         mPaintGuides = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -153,9 +154,9 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     @Override
     public void setTextSize(float size) {
         super.setTextSize(size);
-        int pivotPadding = getPivotPadding();
-        setPadding(getPaddingLeft(), pivotPadding, getPaddingRight(), pivotPadding);
-
+        Rect textBound = new Rect();
+        getPaint().getTextBounds("Aq", 0, 2, textBound);
+        getLayoutParams().height = (mHeightOffset * 3) + getPivotPadding() + (int)(mPaintWidthPx * 3) + (textBound.height());
     }
 
     private int getPivotIndicatorLength() {
@@ -171,8 +172,8 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
             mTestString = "a";
         }
         float textSize = (getPaint().measureText(mTestString, 0, 1));
-        int charactersOnScreen = getMeasuredWidth() / (int)textSize;
-        Spritzer.CHARS_LEFT_OF_PIVOT = (charactersOnScreen/2) - 3;
+        Spritzer.MAX_WORD_LENGTH = getMeasuredWidth() / (int)textSize;
+        Spritzer.CHARS_LEFT_OF_PIVOT = (Spritzer.MAX_WORD_LENGTH/2) - 3;
 
         // Measure the rendered distance of CHARS_LEFT_OF_PIVOT chars
         // plus half the pivot character

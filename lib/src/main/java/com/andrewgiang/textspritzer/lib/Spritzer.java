@@ -25,7 +25,7 @@ public class Spritzer {
 
     protected static final int MSG_PRINT_WORD = 1;
 
-    protected static final int MAX_WORD_LENGTH = 13;
+    public static int MAX_WORD_LENGTH = 13;
     public static int CHARS_LEFT_OF_PIVOT = 3;
 
     protected String[] mWordArray;                  // A parsed list of words parsed from {@link #setText(String input)}
@@ -212,7 +212,7 @@ public class Spritzer {
      * @return
      */
     protected String splitLongWord(String word) {
-        if (word.length() > MAX_WORD_LENGTH) {
+        if (word.length() > MAX_WORD_LENGTH || word.contains("-") || word.contains("—")) {
             int splitIndex = findSplitIndex(word);
             String firstSegment;
             if (VERBOSE) {
@@ -220,7 +220,7 @@ public class Spritzer {
             }
             firstSegment = word.substring(0, splitIndex);
             // A word split is always indicated with a hyphen unless ending in a period
-            if (!firstSegment.contains("-") && !firstSegment.endsWith(".")) {
+            if (!firstSegment.contains("-") && !word.contains("—") && !firstSegment.endsWith(".")) {
                 firstSegment = firstSegment + "-";
             }
             mCurWordIdx--; //have to account for the added word in the queue
@@ -243,6 +243,8 @@ public class Spritzer {
         // Split long words, at hyphen or dot if present.
         if (thisWord.contains("-")) {
             splitIndex = thisWord.indexOf("-") + 1;
+        } else if (thisWord.contains("—")) {
+            splitIndex = thisWord.indexOf("—") + 1;
         } else if (thisWord.contains(".")) {
             splitIndex = thisWord.indexOf(".") + 1;
         } else if (thisWord.length() > MAX_WORD_LENGTH * 2) {
@@ -269,7 +271,7 @@ public class Spritzer {
     }
 
     private boolean wordContainsSplittingCharacter(String word) {
-        return (word.contains(".") || word.contains("-"));
+        return (word.contains(".") || word.contains("-") || word.contains("—"));
     }
 
 
