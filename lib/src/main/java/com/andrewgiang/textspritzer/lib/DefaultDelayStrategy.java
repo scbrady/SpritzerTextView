@@ -5,11 +5,13 @@ package com.andrewgiang.textspritzer.lib;
  */
 public class DefaultDelayStrategy implements DelayStrategy {
     @Override
-    public int delayMultiplier(String word) {
-        if (word.contains(".") || word.contains("?") || word.contains("!"))
-            return 3;
-        if (word.length() >= 6 || word.contains(",") || word.contains(":") || word.contains(";") || word.contains("\""))
-            return 2;
+    public float delayMultiplier(String word) {
+        if (word.endsWith(".") || word.endsWith("?") || word.endsWith("!"))
+            return 2.5f;
+        if (word.contains(",") || word.contains(":") || word.contains(";") || word.contains("\""))
+            return 1.3f;
+        if (word.length() > 6)
+            return 1.1f;
         return 1;
     }
 }

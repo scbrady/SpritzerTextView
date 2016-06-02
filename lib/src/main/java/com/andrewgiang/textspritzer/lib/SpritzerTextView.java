@@ -155,8 +155,8 @@ public class SpritzerTextView extends TextView implements View.OnClickListener {
     public void setTextSize(float size) {
         super.setTextSize(size);
         Rect textBound = new Rect();
-        getPaint().getTextBounds("Aq", 0, 2, textBound);
-        getLayoutParams().height = (mHeightOffset * 3) + getPivotPadding() + (int)(mPaintWidthPx * 3) + (textBound.height());
+        getPaint().getTextBounds("Ag", 0, 2, textBound);
+        getLayoutParams().height = (mHeightOffset * 2) + (int)(getPivotPadding() * 1.6) + (int)(mPaintWidthPx * 3) + (textBound.height());
     }
 
     private int getPivotIndicatorLength() {

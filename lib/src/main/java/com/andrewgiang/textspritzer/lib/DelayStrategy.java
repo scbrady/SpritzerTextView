@@ -18,6 +18,6 @@ public interface DelayStrategy {
      * @return int multiplier
      * @see {@link com.andrewgiang.textspritzer.lib.DefaultDelayStrategy}
      */
-    public int delayMultiplier(String word);
+    public float delayMultiplier(String word);
 
 }

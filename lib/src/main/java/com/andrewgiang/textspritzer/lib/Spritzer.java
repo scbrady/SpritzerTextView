@@ -86,7 +86,8 @@ public class Spritzer {
 
     private void createWordArrayFromString(String input) {
         mWordArray = input
-                .replaceAll("/\\s+/g", " ")      // condense adjacent spaces
+                .replaceAll("[\\t\\n\\r]"," ")  // remove newlines
+                .replaceAll("/\\s+/g", " ")     // condense adjacent spaces
                 .split(" ");                    // split on spaces
     }
 
@@ -194,9 +195,9 @@ public class Spritzer {
 
             mSpritzHandler.sendMessage(mSpritzHandler.obtainMessage(MSG_PRINT_WORD, word));
 
-            final int delayMultiplier = mDelayStrategy.delayMultiplier(word);
+            final float delayMultiplier = mDelayStrategy.delayMultiplier(word);
             //Do not allow multiplier that is less than 1
-            final int wordDelay = getInterWordDelay() * (mDelayStrategy != null ? delayMultiplier < 1 ? 1 : delayMultiplier : 1);
+            final int wordDelay = (int)(getInterWordDelay() * (mDelayStrategy != null ? delayMultiplier < 1 ? 1 : delayMultiplier : 1));
             Thread.sleep(wordDelay);
 
         }
